@@ -1,11 +1,12 @@
 // BUILD YOUR SERVER HERE
 
 const express = require("express");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const model = require("./users/model");
 
 const server = express();
-
+server.use(cors());
 //PORT
 const PORT = 4000;
 
@@ -54,7 +55,7 @@ server.post("/api/users", (req, res) => {
     .insert(body)
     .then((user) => {
       console.log(user);
-      if (user.name === null || user.bio === null) {
+      if (body.name === null || body.bio === null) {
         res.status(404).json("Bad Request");
       } else {
         res.status(201).json({ id: user.id, name: user.name, bio: user.bio });
@@ -67,6 +68,7 @@ server.post("/api/users", (req, res) => {
     });
 });
 
+//Update
 server.put("/api/users/:id", async (req, res) => {
   let { id } = req.params;
   try {
@@ -75,23 +77,20 @@ server.put("/api/users/:id", async (req, res) => {
 
     if (body.name === null || body.bio === null) {
       res
-        .status(400)
+        .status(404)
         .json({ message: "Please provide name and bio for the user" });
-        return
+      return;
+    } else {
+      res.status(201).json({ id, name: body.name, bio: body.bio });
     }
 
-    if (user === null) {
-      res
-        .status(500)
-        .json({ message: "The user information could not be modified" });
-        return
-    }
-
-    res.status(201).json(newUser);
+    res
+      .status(500)
+      .json({ message: "The user information could not be modified" });
   } catch {
-     res
-       .status(404)
-       .json({ message: "The user with the specified ID does not exist" });
+    res
+      .status(404)
+      .json({ message: "The user with the specified ID does not exist" });
   }
 });
 
@@ -99,9 +98,7 @@ server.listen(PORT, () => {
   console.log("SERVER STARTED");
 });
 
-
-//Delete 
-
+//Delete
 server.delete("/api/users/:id", (req, res) => {
   let { id } = req.params;
   model

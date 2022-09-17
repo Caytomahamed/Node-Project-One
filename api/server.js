@@ -12,8 +12,12 @@ const PORT = 4000;
 //RES HSON
 server.use(express.json());
 
-// UTILITY FUCNTIONS
-
+// NOTE: UTILITY FUCNTIONS
+/**
+ * checked If the request body is missing the `name` or `bio` property:
+ * @param {object} body - is the userInput
+ * @param {*} res - is response object
+ */
 const checkBodyInNameandBoi = function (body, res) {
   body.name === null || body.bio === null
     ? res
@@ -22,11 +26,18 @@ const checkBodyInNameandBoi = function (body, res) {
     : "";
 };
 
-const erroChecker = function (res, statusCode, textMessage, id = null) {
-  return res
-    .status(statusCode)
-    .json({ message: `${textMessage} ${id ? id : ""}` });
+/**
+ * Genarating a error message
+ * @param {object} res - respose object
+ * @param {number} statusCode - is http status code
+ * @param {string} textMessage - respose erro message
+ * @returns - message
+ */
+const genarateErro = function (res, statusCode, textMessage) {
+  return res.status(statusCode).json({ message: `${textMessage}` });
 };
+
+// NOTE: END POINT
 
 // GET api/users
 server.get("/api/users", async (_, res) => {
@@ -34,7 +45,7 @@ server.get("/api/users", async (_, res) => {
     const users = await model.find();
     res.json(users);
   } catch (error) {
-    erroChecker(res, 500, "The users information could not be retrieved");
+    genarateErro(res, 500, "The users information could not be retrieved");
   }
 });
 
@@ -45,9 +56,9 @@ server.get("/api/users/:id", async (req, res) => {
     const user = await model.findById(id);
     user && res.json(user);
 
-    erroChecker(res, 404, `The user with the specified ${id} does not exist`);
+    genarateErro(res, 404, `The user with the specified ${id} does not exist`);
   } catch (error) {
-    erroChecker(res, 500, `The user information could not be retrieved`);
+    genarateErro(res, 500, `The user information could not be retrieved`);
   }
 });
 
@@ -59,13 +70,13 @@ server.post("/api/users", async (req, res) => {
     let { body } = req;
 
     if (body.name === null || body.bio === null) {
-      erroChecker(res, 404, "Please provide name and bio for the user");
+      genarateErro(res, 404, "Please provide name and bio for the user");
     }
 
     const newUser = await model.insert(body);
     res.status(201).json(newUser);
   } catch (error) {
-    erroChecker(
+    genarateErro(
       res,
       500`There was an error while saving the user to the database`
     );
@@ -74,44 +85,33 @@ server.post("/api/users", async (req, res) => {
 
 //Update
 server.put("/api/users/:id", async (req, res) => {
-  let {
-    params: { id },
-    body,
-  } = req.params;
-
+  let {params: { id },body,} = req;
   checkBodyInNameandBoi(body, res);
-
   try {
     let updateUser = await model.update(id, body);
-
-    !updateUser.id &&
-      erroChecker(res, 404, "The user with the specified ID does not exist");
+    !updateUser &&
+      genarateErro(res, 404, "The user with the specified ID does not exist");
 
     res.status(200).json(updateUser);
-  } catch {
-    erroChecker(res, 500, "The user information could not be modified");
+  } catch (erro) {
+    genarateErro(res, 500, "The user information could not be modified");
   }
-});
+});  
 
 //Delete
-server.delete("/api/users/:id", (req, res) => {
+server.delete("/api/users/:id", async (req, res) => {
   let { id } = req.params;
-  model
-    .remove(id)
-    .then((user) => {
-      if (user === null) {
-        res
-          .status(404)
-          .json({ message: "The user with the specified ID does not exist" });
-      } else {
-        res.status(200).json(user);
-      }
-    })
-    .catch(() => {
-      res
-        .status(500)
-        .json({ message: "The user information could not be modified" });
-    });
+
+  try {  
+    const deleteUser = await model.remove(id);
+
+    !deleteUser &&  
+      genarateErro(res, 404, "The user with the specified ID does not exist");
+
+    res.status(200).json(deleteUser); 
+  } catch (error) {
+    genarateErro(res, 500, "The user could not be removed");
+  }
 });
 
 module.exports = server;

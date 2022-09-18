@@ -35,7 +35,7 @@ form {
   display: flex;
   flex-direction: column;
 }
-input {
+input,button {
   padding: 8px 20px;
   border-radius: 30px;
   margin-bottom: 10px;
@@ -43,18 +43,18 @@ input {
   outline: none;
   border: none;
 }
-input[type="button"] {
+button {
   color: rgb(89, 40, 40);
   font-size: 15px;
   text-transform: capitalize;
   font-weight: bold;
   transition: all 0.2s ease-in-out;
 }
-input[type="button"]:hover {
+button:hover {
   transform: translateY(-3px);
 }
-input[type="button"]:active,
-input[type="button"]:focus {
+button:active,
+button:focus {
   transform: translateY(-1);
 }
 
@@ -114,7 +114,6 @@ input[type="button"]:focus {
   align-self: flex-start;
   font-weight: 600;
 }
-
 
 /* Spinner  *********/
 .loader-con {

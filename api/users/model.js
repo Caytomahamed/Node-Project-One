@@ -56,7 +56,6 @@ const findById = (id) => {
 const insert = ({ name, bio, image }) => {
   // INSERT INTO users (name, bio) VALUES ('foo', 'bar');
   const newUser = { id: getId(), name, bio, image };
-  console.log(newUser);
   users.push(newUser);
   return Promise.resolve(newUser);
 };

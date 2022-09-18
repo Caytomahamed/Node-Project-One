@@ -65,7 +65,7 @@ server.get("/api/users/:id", async (req, res) => {
 //POST api/users
 server.post("/api/users", async (req, res) => {
   checkBodyInNameandBoi(req.body, res);
-
+  console.log(req.body);
   try {
     let { body } = req;
 

@@ -9,8 +9,10 @@ const init = {
   image: "",
 };
 
-function Form() {
+function Form(props) {
   const [user, setUser] = useState(init);
+  Object.keys(props).length > 0 && setUser(props.data);
+
   const handleChange = (e) => {
     const newUser = { ...user, [e.target.name]: e.target.value };
     setUser(newUser);

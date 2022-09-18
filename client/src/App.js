@@ -19,7 +19,6 @@ function App() {
     fetchUsers();
   });
 
-
   return (
     <div className="App">
       <div className="form-con">

@@ -15,7 +15,6 @@ function Form() {
     const newUser = { ...user, [e.target.name]: e.target.value };
     setUser(newUser);
   };
-  console.log(user);
 
   const handleSubmit = (e) => {
     e.preventDefault();

@@ -176,3 +176,8 @@ button:focus {
   text-align: center;
   cursor: pointer;
 }
+
+/* Utility ****/
+.hidden {
+  display: none;
+}

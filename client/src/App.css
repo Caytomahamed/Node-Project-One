@@ -3,10 +3,13 @@
   width: 1200px;
   margin: 0 auto;
 }
+
 .form-con,
 .user-con {
   width: 50%;
 }
+
+/* form *******/
 .form-con {
   background-color: wheat;
   height: 100vh;
@@ -15,20 +18,12 @@
   align-items: center;
   flex-direction: column;
 }
-.user-con {
-  background-color: aliceblue;
-  padding: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-}
 
 .form {
   width: 60%;
   padding: 25px 25px 40px 25px;
-
+  background-color: wheat;
   border-radius: 28px;
-  background: ##ee9ca7;
   box-shadow: 26px 26px 0px #5a5a5a, -26px -26px 0px #ffffff;
 }
 .form h1 {
@@ -43,7 +38,8 @@ form {
 input {
   padding: 8px 20px;
   border-radius: 30px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  font-size: 16px;
   outline: none;
   border: none;
 }
@@ -62,17 +58,122 @@ input[type="button"]:focus {
   transform: translateY(-1);
 }
 
-.user {
-  width: 230px;
-  margin: 10px;
-  height: 100px;
-  padding: 1px 20px 20px 20px;
-  background: #6dd5ed;
-  box-shadow: 10px 10px 30px #bebebe, -10px -10px 30px #ffffff;
-  border-radius: 10px;
+/* Users  ******/
+
+.user-con {
+  background-color: aliceblue;
+  padding: 20px;
 }
 
-.user h2,
+.users {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
+.user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 240px;
+  height: 100px;
+  margin: 10px;
+  padding: 1px 20px 20px 10px;
+  box-shadow: 10px 10px 30px #bebebe, -10px -10px 30px #5454541d;
+  border-radius: 10px;
+}
+.user-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.user-image {
+  display: block;
+  position: absolute;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  margin-right: 40px;
+  border-radius: 50%;
+  outline: 2px solid wheat;
+}
+
+.user h3,
 .user p {
   color: rgb(89, 40, 40);
+}
+.user h3 {
+  margin-left: 70px;
+}
+
+.user-bio {
+  position: absolute;
+  bottom: 5px;
+  left: 28px;
+  align-self: flex-start;
+  font-weight: 600;
+}
+
+
+/* Spinner  *********/
+.loader-con {
+  width: 100%;
+  height: 20rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loader {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  background: wheat;
+  transform: rotateX(65deg) rotate(45deg);
+
+  transform: perspective(200px) rotateX(65deg) rotate(45deg);
+  color: #5a5a5a;
+  animation: layers1 1s linear infinite alternate;
+}
+.loader:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(89, 40, 40);
+  animation: layerTr 1s linear infinite alternate;
+}
+
+@keyframes layers1 {
+  0% {
+    box-shadow: 0px 0px 0 0px;
+  }
+  90%,
+  100% {
+    box-shadow: 20px 20px 0 -4px;
+  }
+}
+@keyframes layerTr {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(-25px, -25px) scale(1);
+  }
+}
+
+/* Icons *******8 */
+.icons {
+  width: 80px;
+
+  display: flex;
+  justify-content: space-around;
+
+  position: absolute;
+  bottom: 15px;
+  right: 5px;
+}
+.icon {
+  width: 45px;
+  text-align: center;
+  cursor: pointer;
 }
